@@ -38,7 +38,8 @@ function sitemap_generator()
 	
 	
 		//post query
-		$GetPosts = $db->query('SELECT * FROM posts WHERE Post_Pending = 0 AND Post_Privated = 0');
+		$GetPosts = $db->prepare('SELECT * FROM posts WHERE Post_Pending = 0 AND Post_Privated = 0');
+		$GetPosts->execute();
 	
 		//create all none pending and private posts
 		foreach($GetPosts->fetchAll(PDO::FETCH_OBJ) as $Post)
@@ -46,7 +47,7 @@ function sitemap_generator()
 			//create url
 			$url = $dom->createElement('url');
 			//create loc
-			$link = 'http://shittyjokes.com/post.php?PID=' . $Post->Post_Unique;
+			$link = 'http://yoursite.com/post.php?PID=' . $Post->Post_Unique;
 			$url->appendChild($dom->createElement('loc', htmlentities($link)));
 			//create lastmod
 			$url->appendChild($dom->createElement('changefreq', 'monthly'));
